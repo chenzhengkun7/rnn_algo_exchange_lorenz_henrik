@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 dataset = pd.read_csv('pollution.csv', header=0, index_col=0)
 values = dataset.values
 
-groups = [0,1,2,3,4,5,6,7]
+groups = [0,1,2,3,5,6,7]
 i = 1
 
 plt.figure()
