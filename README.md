@@ -12,3 +12,5 @@ Weiteres Vorgehen:
 - RUL Berechnung realisieren (keine Vorhersage aus Beispiel direkt ersichtlich)
 
 - Übertragung auf mehrere Triebwerke
+
+- Pytorch Beispiel http://chandlerzuo.github.io/blog/2017/11/darnn
