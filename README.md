@@ -12,7 +12,7 @@ Weiteres Vorgehen:
   --> Betrachtung ermöglicht gleiche Zyklenlänge für alle Triebwerke
 
 - RUL Berechnung realisieren (keine Vorhersage aus Beispiel direkt ersichtlich)
-  - Daten auf einen HI reduzieren, Vorgehen in [Guo17] beschrieben
+  - Daten auf einen HI reduzieren, Vorgehen in [Guo17] und [Bek17] beschrieben
 
 - Übertragung auf mehrere Triebwerke
 
