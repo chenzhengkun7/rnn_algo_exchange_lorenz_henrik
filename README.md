@@ -13,6 +13,11 @@ Weiteres Vorgehen:
 
 - RUL Berechnung realisieren (keine Vorhersage aus Beispiel direkt ersichtlich)
   - Daten auf einen HI reduzieren, Vorgehen in [Guo17] und [Bek17] beschrieben
+    - Bek17: Therefore, this paper only uses the variables in which an exponential growth or decays occurs
+    - The curves of engine data series are sometimes inconsistent to wear like trajectories, acting like exponential decays as seen                                 on Figure 2, so the decaying curves (blue) are required to be transformed into exponentially growing curves (black). 
+    
+
+(PDF) NARX Time Series Model for Remaining.... Available from: https://www.researchgate.net/publication/317267762_NARX_Time_Series_Model_for_Remaining_Useful_Life_Estimation_of_Gas_Turbine_Engines [accessed Jul 25 2018].
 
 - Übertragung auf mehrere Triebwerke
 
