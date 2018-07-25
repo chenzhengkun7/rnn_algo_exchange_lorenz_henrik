@@ -9,6 +9,7 @@ Weiteres Vorgehen:
 
 - Eigene Daten in Beispiel übertragen (zunächst eine Triebwerke inkl. ihrer Zyklen, weiteres Vorgehen wird überdacht, Arbeit von Heimes mit einbeziehen, anderes Stichwort: Multivariate Timeseries)
   - Heimes: die ersten 30 Zyklen identifizieren ein gesundes Triebwerk, die letzten 30 ein kaputtes
+  --> Betrachtung ermöglicht gleiche Zyklenlänge für alle Triebwerke
 
 - RUL Berechnung realisieren (keine Vorhersage aus Beispiel direkt ersichtlich)
 
