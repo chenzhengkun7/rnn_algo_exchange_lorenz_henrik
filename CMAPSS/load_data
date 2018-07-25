@@ -1,1 +1,13 @@
+import pandas as pd
 
+# load data
+dataset = pd.read_csv('train_FD001.csv', sep=' ', names=['EngNo', 'Cycle', 'OC1', 'OC2', 'OC3', 'S1', 'S2', 'S3',
+                                                         'S4', 'S5', 'S6', 'S7', 'S8', 'S9', 'S10', 'S11', 'S12', 'S13',
+                                                         'S14', 'S15', 'S16', 'S17', 'S18', 'S19', 'S20', 'S21'])
+df = pd.DataFrame(dataset)
+#print(df)
+
+# select engine
+engine_no = 2
+data_sel = df.loc[df['EngNo'] == engine_no]
+print(data_sel)
