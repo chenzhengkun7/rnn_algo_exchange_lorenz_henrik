@@ -16,3 +16,7 @@ Weiteres Vorgehen:
 - Pytorch Beispiel http://chandlerzuo.github.io/blog/2017/11/darnn
 
 - Datenproblem: https://datascience.stackexchange.com/questions/27563/multi-dimentional-and-multivariate-time-series-forecast-rnn-lstm-keras --> https://1.bp.blogspot.com/-7P_ZGBc8s3c/V4TWwNokHpI/AAAAAAAABsk/P0KChOrEYkAEOFmQNE_EMkrjNAnnruluACLcB/s1600/concat.tif
+
+- Beispiel: Wettervorhersage https://github.com/Hvass-Labs/TensorFlow-Tutorials/blob/master/23_Time-Series-Prediction.ipynb
+  - Städte = Triebwerke
+  - Vorhersage für eine Stadt/Triebwerk 
