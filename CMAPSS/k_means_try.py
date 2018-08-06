@@ -12,6 +12,7 @@ from scipy import stats
 from sklearn.cluster import KMeans
 import matplotlib.pyplot as plt
 import seaborn as sns
+import numpy as np
 
 
 # load data
@@ -30,12 +31,18 @@ df_tr = df
 #Transsform the timeOfDay to dummies
 #df_tr = pd.get_dummies(df_tr, columns=['timeOfDay'])
 
+# Add labels to Dataset. 
+cl = np.linspace(0,10,len(df))
+cl = np.rint(cl)
+df_tr['labels'] = cl
 #Standardize
 clmns = ['S2', 'S3', 'S4', 'S7', 'S9', 'S11', 'S12','S15', 'S20', 'S21']
 df_tr_std = stats.zscore(df_tr[clmns])
 
+
+
 #Cluster the data
-kmeans = KMeans(n_clusters=10, random_state=None).fit(df_tr_std)
+kmeans = KMeans(n_clusters=5, random_state=None).fit(df_tr_std)
 labels = kmeans.labels_
 
 #Glue back to originaal data
@@ -44,7 +51,7 @@ df_tr['clusters'] = labels
 #Add the column into our list
 clmns.extend(['clusters'])
 
-plt.plot(df_tr['clusters'])
+plt.scatter(range(len(df)),df_tr['clusters'])
 
 #Lets analyze the clusters
 #print df_tr[clmns].groupby(['clusters']).mean()
