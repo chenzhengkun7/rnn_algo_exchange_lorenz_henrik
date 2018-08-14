@@ -8,8 +8,8 @@ import matplotlib.pyplot as plt
 np.random.seed(1234)
 
 # read training data - It is the aircraft engine run-to-failure data.
-train_df = pd.read_csv('data/train/train_FD001.txt', sep=" ", header=None)
-train_df.drop(train_df.columns[[26, 27]], axis=1, inplace=True)
+train_df = pd.read_csv('train_FD001_filt.csv', sep=" ", header=0)
+#train_df.drop(train_df.columns[[26, 27]], axis=1, inplace=True)
 train_df.columns = ['id', 'cycle', 'setting1', 'setting2', 'setting3', 's1', 's2', 's3',
                     's4', 's5', 's6', 's7', 's8', 's9', 's10', 's11', 's12', 's13', 's14',
                     's15', 's16', 's17', 's18', 's19', 's20', 's21']
@@ -119,9 +119,9 @@ y_pred = clf.predict(X_test)
 # prepare test data
 ###################
 # select columns of interest
-test_df = test_df[['setting1', 'setting2', 'setting3', 's1', 's2', 's3',
-                   's4', 's5', 's6', 's7', 's8', 's9', 's10', 's11', 's12', 's13', 's14',
-                   's15', 's16', 's17', 's18', 's19', 's20', 's21']]
+#test_df = test_df[['setting1', 'setting2', 'setting3', 's1', 's2', 's3',
+#                   's4', 's5', 's6', 's7', 's8', 's9', 's10', 's11', 's12', 's13', 's14',
+#                   's15', 's16', 's17', 's18', 's19', 's20', 's21']]
 
 ########################
 # evaluate and use model
@@ -130,4 +130,4 @@ test_df = test_df[['setting1', 'setting2', 'setting3', 's1', 's2', 's3',
 # model accuracy, how often is the classifier correct?
 print("Accuracy:", metrics.accuracy_score(y_test, y_pred))
 
-print(clf.predict([test_df.iloc[125]]))
+#print(clf.predict([test_df.iloc[125]]))
