@@ -5,11 +5,41 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn import metrics
 import matplotlib.pyplot as plt
 
-np.random.seed(1234)
+#np.random.seed(1234)
+
+names = ['EngNo', 'Cycle', 'OC1', 'OC2', 'OC3', 'S1', 'S2', 'S3',
+         'S4', 'S5', 'S6', 'S7', 'S8', 'S9', 'S10', 'S11', 'S12', 'S13',
+         'S14', 'S15', 'S16', 'S17', 'S18', 'S19', 'S20', 'S21']
+
+# load data
+dataset = pd.read_csv('train_FD001.csv', sep=' ', names=names)
+df = pd.DataFrame(dataset)
+# print(df)
+data = pd.DataFrame(columns=names)
+
+for i in range(1, 101):
+    # select engine
+    engine_no = i
+    data_sel = df.loc[df['EngNo'] == engine_no]
+
+    # filter
+    window_size = 20
+    rolling = data_sel.rolling(window=window_size)
+    rm = rolling.mean()
+    # delete NaN
+    rm = rm.drop(rm.index[0:(window_size - 1)])
+    data = pd.concat([data, rm])
+
+data.to_csv('train_FD001_filt.csv', encoding='utf-8', index=None, sep=',')
+
+raw_df = pd.read_csv('data/train/train_FD001.txt', sep=" ", header=None)
+raw_df.drop(raw_df.columns[[26, 27]], axis=1, inplace=True)
+raw_df.columns = ['id', 'cycle', 'setting1', 'setting2', 'setting3', 's1', 's2', 's3',
+                  's4', 's5', 's6', 's7', 's8', 's9', 's10', 's11', 's12', 's13', 's14',
+                  's15', 's16', 's17', 's18', 's19', 's20', 's21']
 
 # read training data - It is the aircraft engine run-to-failure data.
-train_df = pd.read_csv('train_FD001_filt.csv', sep=" ", header=0)
-#train_df.drop(train_df.columns[[26, 27]], axis=1, inplace=True)
+train_df = pd.read_csv('train_FD001_filt.csv', sep=",", header=0)
 train_df.columns = ['id', 'cycle', 'setting1', 'setting2', 'setting3', 's1', 's2', 's3',
                     's4', 's5', 's6', 's7', 's8', 's9', 's10', 's11', 's12', 's13', 's14',
                     's15', 's16', 's17', 's18', 's19', 's20', 's21']
@@ -29,15 +59,6 @@ test_df.columns = ['id', 'cycle', 'setting1', 'setting2', 'setting3', 's1', 's2'
 #######
 # TRAIN
 #######
-# Data Labeling - generate column RUL(Remaining Usefull Life or Time to Failure)
-rul = pd.DataFrame(train_df.groupby('id')['cycle'].max()).reset_index()
-rul.columns = ['id', 'max']
-# RUL der Trainingsdaten wird ausgelesen
-train_df = train_df.merge(rul, on=['id'], how='left')
-# max RUL wird den Enginges zugeordnet
-train_df['RUL'] = train_df['max'] - train_df['cycle']
-# RUL wird berechnet und der Train Matrix angefügt
-train_df.drop('max', axis=1, inplace=True)
 
 # generate label columns for training data
 for i in range(100):
@@ -47,65 +68,23 @@ for i in range(100):
     cl_round = np.round(classes)
     for j in range(10):
         train_df.loc[(train_df['cycle'] > cl_round[j]) & (train_df['id'] == i + 1), 'class'] = j + 1
-
-# sort new dataframe regarding class
-train_df = train_df.sort_values(by=['class'])
 print(train_df)
-
-# extract classes
-class_1 = train_df.loc[train_df['class'] == 1]
-class_2 = train_df.loc[train_df['class'] == 2]
-class_3 = train_df.loc[train_df['class'] == 3]
-class_4 = train_df.loc[train_df['class'] == 4]
-class_5 = train_df.loc[train_df['class'] == 5]
-class_6 = train_df.loc[train_df['class'] == 6]
-class_7 = train_df.loc[train_df['class'] == 7]
-class_8 = train_df.loc[train_df['class'] == 8]
-class_9 = train_df.loc[train_df['class'] == 9]
-class_10 = train_df.loc[train_df['class'] == 10]
-
-size_list = [class_1.shape, class_2.shape, class_3.shape, class_4.shape, class_5.shape, class_6.shape,
-             class_7.shape, class_8.shape, class_9.shape, class_10.shape]
-
-min_value = min(size_list)
-min_value = min_value[0]
-
-# resample data
-class_1 = class_1.sample(n=min_value)
-class_2 = class_2.sample(n=min_value)
-class_3 = class_3.sample(n=min_value)
-class_4 = class_4.sample(n=min_value)
-class_5 = class_5.sample(n=min_value)
-class_6 = class_6.sample(n=min_value)
-class_7 = class_7.sample(n=min_value)
-class_8 = class_8.sample(n=min_value)
-class_9 = class_9.sample(n=min_value)
-class_10 = class_10.sample(n=min_value)
-
-data = class_1.append(class_2, ignore_index=True)
-data = data.append(class_3, ignore_index=True)
-data = data.append(class_4, ignore_index=True)
-data = data.append(class_5, ignore_index=True)
-data = data.append(class_6, ignore_index=True)
-data = data.append(class_7, ignore_index=True)
-data = data.append(class_8, ignore_index=True)
-data = data.append(class_9, ignore_index=True)
-data = data.append(class_10, ignore_index=True)
-data.to_csv('labeled_data.csv', encoding='utf-8', index=None)
-
+#plt.plot(train_df['s9'])
+#plt.plot(dataset['S9'])
+#plt.show()
 #####################
-# Random Forest Model
+# MLP Model
 #####################
 
 # define input and output data
-X = data[['setting1', 'setting2', 'setting3', 's1', 's2', 's3',
+X = train_df[['setting1', 'setting2', 'setting3', 's1', 's2', 's3',
                    's4', 's5', 's6', 's7', 's8', 's9', 's10', 's11', 's12', 's13', 's14',
                    's15', 's16', 's17', 's18', 's19', 's20', 's21']]
 
-y = data[['class']]
+y = train_df[['class']]
 
 # split dataset into training set and test set
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
 
 # create a Gaussian Classifier
 clf = RandomForestClassifier(n_estimators=100)
@@ -119,9 +98,10 @@ y_pred = clf.predict(X_test)
 # prepare test data
 ###################
 # select columns of interest
-#test_df = test_df[['setting1', 'setting2', 'setting3', 's1', 's2', 's3',
-#                   's4', 's5', 's6', 's7', 's8', 's9', 's10', 's11', 's12', 's13', 's14',
-#                   's15', 's16', 's17', 's18', 's19', 's20', 's21']]
+test_df = train_df[['setting1', 'setting2', 'setting3', 's1', 's2', 's3',
+                   's4', 's5', 's6', 's7', 's8', 's9', 's10', 's11', 's12', 's13', 's14',
+                   's15', 's16', 's17', 's18', 's19', 's20', 's21']]
+print(train_df.iloc[12])
 
 ########################
 # evaluate and use model
@@ -130,4 +110,4 @@ y_pred = clf.predict(X_test)
 # model accuracy, how often is the classifier correct?
 print("Accuracy:", metrics.accuracy_score(y_test, y_pred))
 
-#print(clf.predict([test_df.iloc[125]]))
+print(clf.predict([test_df.iloc[12]]))
